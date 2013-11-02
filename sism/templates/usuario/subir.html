@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block titulo %}Mi Perfil{% endblock %}
+{% block principal %}
+<h2><i class="icon-params"></i> Subir Música</h2>
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{formulario.as_p}}
+	<input type="submit" value="Subir Musica" class="btn btn-primary" />
+</form>
+{% endblock %}

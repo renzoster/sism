@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% load static from staticfiles %}
+
+{% block titulo %}SISM | Buscar{% endblock %}
+{% block contenido %}
+<h2>Resultados para: {{q}}</h2>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Nombre</th>
+			<th>Género</th>
+			<th>Usuario</th>
+			<th>Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for cancion in canciones %}
+	<tr>
+		<td>{{forloop.counter}}</td>
+		<td><i class="icon-music"></i> <a href="{% url 'musica.views.verMusica' cancion.pk cancion.url %}">{{cancion.nombre}}</a></td>
+		<td>{{cancion.genero}}</td>
+		<td>{{cancion.usuario}}</td>
+		<td><a href="#" class="btn btn-sm btn-danger btn-play" data-audio="{{cancion.get_absolute_url}}"><i class="icon-play"></i> Reproducir</a> <a href="{{cancion.get_absolute_url}}" class="btn btn-sm btn-default"><i class="icon-download-cloud"></i> Descargar</a></td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

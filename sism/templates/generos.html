@@ -1,0 +1,12 @@
+{% for genero in recientes %}
+	<div class="row">
+		<h2>{{genero.genero}}</h2>
+		<div class="clearfix">
+			<ul>
+			{% for cancion in genero.canciones %}
+				<li><a href="{{cancion.get_absolute_url}}">{{cancion.nombre}}</a></li>
+			{% endfor %}
+			</ul>
+		</div>
+	</div>
+	{% endfor %}

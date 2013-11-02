@@ -1,0 +1,87 @@
+{% load static from staticfiles %}
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block titulo %}SISM{% endblock %}</title>
+	<link rel="stylesheet" href="{% static "css/bootstrap.min.css"%}">
+	<link rel="stylesheet" href="{% static "css/icon.css"%}">
+	<link rel="stylesheet" href="{% static "css/style.css"%}">
+</head>
+<body>
+<nav id="nav" class="navbar navbar-inverse menu">
+	<div class="navbar-header">
+		<a href="{% url 'musica.views.portada' %}" class="navbar-brand">SISM</a>
+	</div>
+	<form action="{% url 'musica.views.buscar' %}" class="navbar-form navbar-left">
+		<div class="form-group">
+			<input type="text" name="q" class="form-control" placeholder="Buscar" />
+		</div>
+		<input type="submit" class="btn btn-default" value="Ir" />
+	</form>
+	<ul class="nav navbar-nav navbar-right">
+	{% if not request.user.is_authenticated %}
+		<li><a href="{% url 'django.contrib.auth.views.login' %}">Entrar</a></li>
+		<li><a href="#"><span class="label label-danger">Registrarse</span></a></li>
+	{% else %}
+		<li><a href="{% url 'usuario.views.perfil' %}">Perfil</a></li>
+		<li><a href="{% url 'musica.views.miMusica' %}">Música</a></li>
+		<li><a href="{% url 'musica.views.logout' %}">Salir</a></li>
+	{% endif %}
+	</ul>
+</nav>
+{% if user.is_authenticated %}
+<div id="sidebar-l">
+	<div class="inner">
+		<h3>{{user.username}}</h3>
+	</div>	
+</div>
+{% endif %}
+{% if user.is_authenticated %}
+<div id="main">
+{% else %}
+<div id="main" class="main-total">
+{% endif %}
+<div class="inner">
+{% block principal %}
+	{% block contenido %}
+
+<h2><i class="icon-paper-plane"></i> Recientes</h2>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Nombre</th>
+			<th>Género</th>
+			<th>Usuario</th>
+			<th>Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+{% for cancion in canciones %}
+	<tr>
+		<td>{{forloop.counter}}</td>
+		<td><i class="icon-music"></i> <a href="{% url 'musica.views.verMusica' cancion.pk cancion.url %}">{{cancion.nombre}}</a></td>
+		<td>{{cancion.genero}}</td>
+		<td>{{cancion.usuario}}</td>
+		<td><a href="#" class="btn btn-sm btn-danger btn-play" data-audio="{{cancion.get_absolute_url}}"><i class="icon-play"></i> Reproducir</a> <a href="{{cancion.get_absolute_url}}" class="btn btn-sm btn-default"><i class="icon-download-cloud"></i> Descargar</a></td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+
+	{% endblock %}
+{% endblock %}
+</div>
+</div>
+{% if user.is_authenticated %}
+<div id="sidebar-r">
+	<h3 class="titulo">Playlist</h3>
+	{% block sidebar %}{% endblock %}
+</div>
+{% endif %}
+<script src="{% static "js/jquery-1.10.2.min.js"%}"></script>
+<script src="{% static "js/bootstrap.min.js"%}"></script>
+<script src="{% static "js/app.js"%}"></script>
+</body>
+</html>

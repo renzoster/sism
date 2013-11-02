@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block titulo %}Mi Música{% endblock %}
+{% block principal %}
+<h2><i class="icon-music-1"></i> {{cancion.nombre}} <a href="#" class="btn btn-sm btn-danger btn-play" data-audio="{{cancion.get_absolute_url}}"><i class="icon-play"></i> Reproducir</a></h2>
+<p><strong>Subido por:</strong> {{cancion.usuario}}</p>
+<p><strong>Fecha:</strong> {{cancion.fechaCreacion}}</p>
+<p>
+	<strong>Descripción:</strong><br/>
+	{{cancion.descripcion}}</p>
+{% endblock %}
